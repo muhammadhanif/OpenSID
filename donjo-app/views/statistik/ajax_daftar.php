@@ -5,9 +5,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /**
  * File ini:
  *
- * View untuk modul Peta
+ * View untuk modul Statistik Kependudukan
  *
- * donjo-app/views/gis/content_dusun.php,
+ * donjo-app/views/statistik/ajax_daftar.php,
  *
  */
 
@@ -46,22 +46,37 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  */
 ?>
 
-<div id="isi_popup_dusun">
-	<?php foreach ($dusun_gis as $key_dusun => $dusun): ?>
-		<div id="isi_popup_dusun_<?= $key_dusun ?>" style="visibility: hidden;">
-			<div id="content">
-				<center><h5 id="firstHeading" class="firstHeading"><b>Wilayah <?= $wilayah . " " . $dusun['dusun']; ?></b></h5></center>
-				<p><center><a href="#collapseStatGraph" class="btn btn-social btn-flat bg-navy btn-sm visible-xs-block visible-sm-inline-block visible-md-inline-block visible-lg-inline-block btn-modal" title="Statistik Penduduk" data-toggle="collapse" data-target="#collapseStatGraph" aria-expanded="false" aria-controls="collapseStatGraph"><i class="fa fa-bar-chart"></i>Statistik Penduduk</a></center></p>
-				<div class="collapse box-body no-padding" id="collapseStatGraph">
-					<div id="bodyContent">
-						<div class="card card-body">
-							<?php foreach ($list_lap as $key => $value): ?>
-								<li <?= jecho($lap, $key, 'class="active"'); ?>><a href="<?= site_url("statistik/chart_gis_dusun/$key/" . underscore($dusun[dusun])); ?>" data-remote="false" data-toggle="modal" data-target="#modalBox" data-title="Statistik Penduduk <?= $wilayah . " " . $dusun['dusun']; ?>"><?= $value; ?></a></li>
-							<?php endforeach; ?>
-						</div>
-					</div>
-				</div>
-			</div>
+<script src="<?= base_url()?>assets/js/jquery.validate.min.js"></script>
+<script src="<?= base_url()?>assets/js/validasi.js"></script>
+<script src="<?= base_url()?>assets/js/localization/messages_id.js"></script>
+<script>
+	$('document').ready(function() {
+		$('#validasi').submit(function() {
+			if ($('#validasi').valid())
+				$('#modalBox').modal('hide');
+		});
+	});
+</script>
+<form action="<?= $form_action?>" method="post" id="validasi" target="_blank">
+	<input type="hidden" name="tahun">
+	<input type="hidden" name="bulan">
+	<div class="modal-body">
+		<div class="form-group">
+			<label for="pamong_ttd">Laporan Ditandatangani</label>
+			<select class="form-control input-sm required" name="pamong_ttd">
+				<option value="">Pilih Staf Pemerintah <?= ucwords($this->setting->sebutan_desa)?></option>
+				<?php foreach ($pamong AS $data): ?>
+					<option value="<?= $data['pamong_id']?>" <?= selected($data['pamong_ttd'], 1); ?>><?= $data['nama']?> (<?= $data['jabatan']?>)</option>
+				<?php endforeach; ?>
+			</select>
 		</div>
-	<?php endforeach; ?>
-</div>
+		<div class="form-group">
+			<label for="laporan_no">Laporan No.</label>
+			<input id="laporan_no" class="form-control input-sm required" type="text" placeholder="Laporan No." name="laporan_no" value="">
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button type="reset" class="btn btn-social btn-flat btn-danger btn-sm" data-dismiss="modal"><i class='fa fa-sign-out'></i> Tutup</button>
+		<button type="submit" class="btn btn-social btn-flat btn-info btn-sm" id="ok"><i class='fa fa-check'></i> <?= ucwords($aksi); ?></button>
+	</div>
+</form>

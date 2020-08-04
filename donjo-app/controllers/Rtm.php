@@ -2,6 +2,47 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+/**
+ * File ini:
+ *
+ * Controller untuk modul Rumah Tangga
+ *
+ * donjo-app/controllers/Rtm.php,
+ *
+ */
+
+/**
+ *
+ * File ini bagian dari:
+ *
+ * OpenSID
+ *
+ * Sistem informasi desa sumber terbuka untuk memajukan desa
+ *
+ * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
+ *
+ * Hak Cipta 2009 - 2015 Combine Resource Institution (http://lumbungkomunitas.net/)
+ * Hak Cipta 2016 - 2020 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ *
+ * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
+ * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
+ * tanpa batasan, termasuk hak untuk menggunakan, menyalin, mengubah dan/atau mendistribusikan,
+ * asal tunduk pada syarat berikut:
+ * Pemberitahuan hak cipta di atas dan pemberitahuan izin ini harus disertakan dalam
+ * setiap salinan atau bagian penting Aplikasi Ini. Barang siapa yang menghapus atau menghilangkan
+ * pemberitahuan ini melanggar ketentuan lisensi Aplikasi Ini.
+ * PERANGKAT LUNAK INI DISEDIAKAN "SEBAGAIMANA ADANYA", TANPA JAMINAN APA PUN, BAIK TERSURAT MAUPUN
+ * TERSIRAT. PENULIS ATAU PEMEGANG HAK CIPTA SAMA SEKALI TIDAK BERTANGGUNG JAWAB ATAS KLAIM, KERUSAKAN ATAU
+ * KEWAJIBAN APAPUN ATAS PENGGUNAAN ATAU LAINNYA TERKAIT APLIKASI INI.
+ *
+ * @package	OpenSID
+ * @author	Tim Pengembang OpenDesa
+ * @copyright	Hak Cipta 2009 - 2015 Combine Resource Institution (http://lumbungkomunitas.net/)
+ * @copyright	Hak Cipta 2016 - 2020 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @license	http://www.gnu.org/licenses/gpl.html	GPL V3
+ * @link 	https://github.com/OpenSID/OpenSID
+ */
+
 class Rtm extends Admin_Controller {
 
 	private $_header;
@@ -140,24 +181,32 @@ class Rtm extends Admin_Controller {
 	public function insert()
 	{
 		$this->rtm_model->insert();
+		$this->session->order_by = 6;
+
 		redirect('rtm');
 	}
 
 	public function insert_by_kk()
 	{
 		$this->rtm_model->insert_by_kk();
+		$this->session->order_by = 6;
+
 		redirect('rtm');
 	}
 
 	public function insert_a()
 	{
 		$this->rtm_model->insert_a();
+		$this->session->order_by = 6;
+
 		redirect('rtm');
 	}
 
 	public function insert_new()
 	{
 		$this->rtm_model->insert_new();
+		$this->session->order_by = 6;
+
 		redirect('rtm');
 	}
 
@@ -217,11 +266,11 @@ class Rtm extends Admin_Controller {
 		$this->load->view("sid/kependudukan/ajax_add_anggota_rtm_form", $data);
 	}
 
-	public function edit_anggota($id_kk = 0, $id = 0)
+	public function edit_anggota($id_rtm = 0, $id = 0)
 	{
 		$data['hubungan'] = $this->rtm_model->list_hubungan();
 		$data['main'] = $this->rtm_model->get_anggota($id);
-		$data['form_action'] = site_url("rtm/update_anggota/$id_kk/$id");
+		$data['form_action'] = site_url("rtm/update_anggota/$id_rtm/$id");
 		$this->load->view("sid/kependudukan/ajax_edit_anggota_rtm", $data);
 	}
 
@@ -265,10 +314,10 @@ class Rtm extends Admin_Controller {
 		redirect("rtm/anggota/$id");
 	}
 
-	public function update_anggota($id_kk = 0, $id = 0)
+	public function update_anggota($id_rtm = 0, $id = 0)
 	{
-		$this->rtm_model->update_anggota($id, $id_kk);
-		redirect("rtm/anggota/$id_kk");
+		$this->rtm_model->update_anggota($id, $id_rtm);
+		redirect("rtm/anggota/$id_rtm");
 	}
 
 	public function delete_anggota($kk = 0, $id = 0)
